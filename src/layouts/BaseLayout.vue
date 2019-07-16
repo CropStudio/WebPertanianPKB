@@ -47,7 +47,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item active-class="active" clickable v-ripple>
+          <q-item active-class="active" clickable v-ripple to="/petani">
             <q-item-section avatar>
               <q-icon name="people" />
             </q-item-section>
