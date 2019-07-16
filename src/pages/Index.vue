@@ -1,6 +1,10 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg">
+  <q-page padding>
+    <div class="row text-center">
+      <div class="col-12">
+        <p>Hello</p>
+      </div>
+    </div>
   </q-page>
 </template>
 
