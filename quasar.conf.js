@@ -30,7 +30,7 @@ module.exports = function (ctx) {
       // iconSet: 'ionicons-v4',
       // lang: 'de', // Quasar language
 
-      // all: true, // --- includes everything; for dev only!
+      all: true, // --- includes everything; for dev only!
 
       components: [
         'QLayout',
@@ -45,7 +45,8 @@ module.exports = function (ctx) {
         'QList',
         'QItem',
         'QItemSection',
-        'QItemLabel'
+        'QItemLabel',
+        'QAvatar'
       ],
 
       directives: [
@@ -83,7 +84,7 @@ module.exports = function (ctx) {
     devServer: {
       // https: true,
       // port: 8080,
-      open: true // opens browser window automatically
+      open: false // opens browser window automatically
     },
 
     // animations: 'all', // --- includes all animations
