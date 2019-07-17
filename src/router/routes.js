@@ -15,6 +15,20 @@ const routes = [
     ]
   },
   {
+    path: '/anak',
+    component: () => import('layouts/BaseLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/anak/Index.vue') }
+    ]
+  },
+  {
+    path: '/poktan',
+    component: () => import('layouts/BaseLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/poktan/Index.vue') }
+    ]
+  },
+  {
     path: '/',
     component: () => import('layouts/BaseLayout.vue'),
     meta: { requiresAuth: true },

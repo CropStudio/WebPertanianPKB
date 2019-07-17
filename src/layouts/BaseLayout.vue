@@ -57,13 +57,22 @@
             </q-item-section>
           </q-item>
 
-          <q-item active-class="active" clickable v-ripple>
+          <q-item active-class="active" clickable v-ripple to="/anak">
             <q-item-section avatar>
               <q-icon name="child_care" />
             </q-item-section>
 
             <q-item-section>
               Anak Petani
+            </q-item-section>
+          </q-item>
+          <q-item active-class="active" clickable v-ripple to="/poktan">
+            <q-item-section avatar>
+              <q-icon name="people" />
+            </q-item-section>
+
+            <q-item-section>
+              Poktan
             </q-item-section>
           </q-item>
           <q-item active-class="active" to="/pupuk" clickable v-ripple>
