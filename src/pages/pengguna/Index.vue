@@ -166,7 +166,6 @@
                       url="http://localhost:4444/upload"
                       label="Kartu KTP"
                       accept=".jpg, image/*"
-                      style="min-width: 450px"
                       color="teal"
                     />
                   </div>
@@ -175,7 +174,6 @@
                       url="http://localhost:4444/upload"
                       label="Kartu Keluarga"
                       accept=".jpg, image/*"
-                      style="min-width: 450px"
                       color="red"
                     />
                   </div>
