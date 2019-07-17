@@ -21,6 +21,14 @@ const routes = [
     children: [
       { path: 'petani', component: () => import('pages/petani/Index.vue') }
     ]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/BaseLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      { path: 'JatahPupuk', component: () => import('pages/JatahPupuk/Index.vue') }
+    ]
   }
 ]
 

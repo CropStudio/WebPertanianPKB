@@ -77,7 +77,7 @@
           </q-item>
           <q-item-label class="text-white" header>Data Operasional</q-item-label>
 
-          <q-item active-class="active" clickable v-ripple>
+          <q-item active-class="active" clickable v-ripple to="/JatahPupuk">
             <q-item-section avatar>
               <q-icon name="store" />
             </q-item-section>
