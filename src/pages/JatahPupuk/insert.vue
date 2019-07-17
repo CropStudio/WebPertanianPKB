@@ -7,7 +7,7 @@
         >
             <q-input
                     filled
-                    v-model="data.jumlah"
+                    v-model.number="data.jumlah"
                     label="Jumlah"
                     hint="Jumlah"
                     type="number"

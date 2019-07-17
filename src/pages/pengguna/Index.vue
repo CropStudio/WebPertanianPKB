@@ -56,7 +56,7 @@
                     color="red"
                     dense
                     size="sm"
-                    @click="hapus(props.row.id, props.row.username)"
+                    @click="hapus(props.row.id, props.row.nama)"
                     class="q-px-xs"
                     icon="delete"
                     label="Delete"
@@ -83,7 +83,7 @@
               outlined
               dense
               maxlength="12"
-              v-model="form.username"
+              v-model="form.nik"
               hint="Maksimal 12 huruf terdiri dari angka dan huruf"
               label="NIK"
               :rules="[
@@ -141,44 +141,44 @@
                   val => val === this.form.password || 'Password tidak sama!'
                   ]"
                 ></q-input>
-                <p class="text-subtitle2 text-grey-7">
-                  Role :
-                  <q-radio
-                    keep-color
-                    v-model.trim="form.role"
-                    val="2"
-                    label="Admin"
-                    color="green"
-                  />
-                  <q-radio keep-color v-model.trim="form.role" val="3" label="POKTAN" color="blue"/>
-                  <q-radio keep-color v-model.trim="form.role" val="4" label="Petani" color="red"/>
-                  <q-radio
-                    keep-color
-                    v-model.trim="form.role"
-                    val="5"
-                    label="Gubernur"
-                    color="yellow"
-                  />
-                </p>
-                <div class="row q-col-gutter-sm">
-                  <div class="col-12">
-                    <q-uploader
-                      url="http://localhost:4444/upload"
-                      label="Kartu KTP"
-                      accept=".jpg, image/*"
-                      color="teal"
-                    />
-                  </div>
-                  <div class="col-12">
-                    <q-uploader
-                      url="http://localhost:4444/upload"
-                      label="Kartu Keluarga"
-                      accept=".jpg, image/*"
-                      color="red"
-                    />
-                  </div>
-                </div>
               </div>
+            <p class="text-subtitle2 text-grey-7">
+              Role :
+              <q-radio
+                keep-color
+                v-model.trim="form.role"
+                :val=1
+                label="Admin"
+                color="green"
+              />
+              <q-radio keep-color v-model.trim="form.role" :val=2 label="POKTAN" color="blue"/>
+              <q-radio keep-color v-model.trim="form.role" :val=3 label="Petani" color="red"/>
+              <q-radio
+                keep-color
+                v-model.trim="form.role"
+                :val=4
+                label="Gubernur"
+                color="yellow"
+              />
+            </p>
+            <div class="row q-col-gutter-sm">
+              <div class="col-12">
+                <q-uploader
+                  url="http://localhost:4444/upload"
+                  label="Kartu KTP"
+                  accept=".jpg, image/*"
+                  color="teal"
+                />
+              </div>
+              <div class="col-12">
+                <q-uploader
+                  url="http://localhost:4444/upload"
+                  label="Kartu Keluarga"
+                  accept=".jpg, image/*"
+                  color="red"
+                />
+              </div>
+            </div>
           </q-card-section>
           <q-separator/>
 
@@ -244,11 +244,11 @@ export default {
     }
   },
   methods: {
-    hapus (id, username) {
+    hapus (id, nama) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingi menghapus username: ' + username + '?',
+          message: 'Ingi menghapus pengguna: ' + nama + '?',
           cancel: true,
           persistent: true
         })
@@ -261,7 +261,7 @@ export default {
             })
             .then(response => {
               this.$q.loading.hide()
-              if (response.data.success) {
+              if (response.data.status) {
                 this.loadData()
                 this.$q.notify({
                   color: 'positive',
@@ -288,7 +288,7 @@ export default {
         })
           .then((response) => {
             this.$q.loading.hide()
-            if (response.data.success) {
+            if (response.data.status) {
               this.closeDialog()
               this.loadData()
               this.$q.notify({
@@ -312,7 +312,7 @@ export default {
         })
           .then((response) => {
             this.$q.loading.hide()
-            if (response.data.success) {
+            if (response.data.status) {
               this.closeDialog()
               this.loadData()
               this.$q.notify({
@@ -340,7 +340,7 @@ export default {
       })
         .then((response) => {
           this.loadingAction = false
-          this.form = response.data.data
+          this.form = response.data.message
         })
     },
     tambah () {
@@ -358,7 +358,7 @@ export default {
         .get('api/user')
         .then(response => {
           this.loading = false
-          this.data = response.data.data
+          this.data = response.data.message
         })
         .catch(error => {
           this.loading = false
