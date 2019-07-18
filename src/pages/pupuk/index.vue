@@ -124,11 +124,11 @@ export default {
     }
   },
   methods: {
-    hapus (_id) {
+    hapus (id) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + _id + '?',
+          message: 'Ingin menghapus username: ' + id + '?',
           cancel: true,
           persistent: true
         })
@@ -137,7 +137,7 @@ export default {
           this.$store
             .dispatch({
               type: 'pupuk/hapus',
-              _id: _id
+              id: id
             })
             .then(response => {
               this.$q.loading.hide()

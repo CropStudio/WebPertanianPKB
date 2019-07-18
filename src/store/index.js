@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import user from './user'
 import petani from './petani'
 import jatah from './jatah'
+import poktan from './poktan'
 
 Vue.use(Vuex)
 
@@ -18,8 +19,9 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       user,
+      jatah,
       petani,
-      jatah
+      poktan
     },
 
     // enable strict mode (adds overhead!)
@@ -32,9 +34,10 @@ export default function (/* { ssrContext } */) {
     ], () => {
       const newUserr = require('./user').default
       const newPetani = require('./petani').default
+      const newPoktan = require('./poktan').default
       const newJatah = require('./jatah').default
       Store.hotUpdate({ modules: {
-        user: newUserr, petani: newPetani, jatah: newJatah
+        user: newUserr, petani: newPetani, poktan: newPoktan, jatah: newJatah
       } })
     })
   }
