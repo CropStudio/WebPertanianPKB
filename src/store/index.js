@@ -30,14 +30,20 @@ export default function (/* { ssrContext } */) {
   })
   if (process.env.DEV && module.hot) {
     module.hot.accept([
-      './user', './petani', './jatah'
+      './user',
+      './petani',
+      './jatah',
+      './poktan'
     ], () => {
       const newUserr = require('./user').default
       const newPetani = require('./petani').default
       const newPoktan = require('./poktan').default
       const newJatah = require('./jatah').default
       Store.hotUpdate({ modules: {
-        user: newUserr, petani: newPetani, poktan: newPoktan, jatah: newJatah
+        user: newUserr,
+        petani: newPetani,
+        poktan: newPoktan,
+        jatah: newJatah
       } })
     })
   }
