@@ -39,16 +39,15 @@
                                 <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
                             </q-td>
                             <q-td key="nama" :props="props">{{ props.row.nama }}</q-td>
-                            <q-td key="jeniskelamin" :props="props">{{ props.row.jenis_kelamin }}</q-td>
+                            <q-td key="jenis_kelamin" :props="props">{{ props.row.jenis_kelamin }}</q-td>
                             <q-td key="komoditas" :props="props">{{ props.row.komoditas }}</q-td>
-                            <q-td key="idpoktan" :props="props">{{ props.row.id_poktan }}</q-td>
-                            <q-td key="luaslahan" :props="props">{{ props.row.luas_lahan }}</q-td>
-                            <q-td key="iduser" :props="props">{{ props.row.id_user }}</q-td>
+                            <q-td key="id_poktan" :props="props">{{ props.row.id_poktan }}</q-td>
+                            <q-td key="luas_lahan" :props="props">{{ props.row.luas_lahan }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
                                 <div class="text-left q-gutter-x-xs">
-                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row._id)" label="Edit"/>
+                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row.id)" label="Edit"/>
                                     <q-btn
                                             color="red"
                                             dense
@@ -68,7 +67,7 @@
         <q-dialog v-model="action" persistent>
             <q-card style="width: 500px; max-width: 80vw;">
                 <q-card-section class="row items-center">
-                    <div class="text-h6">{{ editMode ? 'Edit Data Pengguna' : 'Tambah Data Pengguna'}}</div>
+                    <div class="text-h6">{{ editMode ? 'Edit Data Petani' : 'Tambah Data Petani'}}</div>
                     <q-space/>
                     <q-btn icon="close" flat round dense @click="closeDialog()"/>
                 </q-card-section>
@@ -133,17 +132,6 @@
                   val => !!val || 'Luas Lahan dibutuhkan'
                   ]"
                         ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_user"
-                                label="ID User"
-                                :rules="[
-                  val => !!val || 'ID User dibutuhkan'
-                  ]"
-                        ></q-input>
-
                     </q-card-section>
                     <q-separator/>
 
@@ -177,10 +165,10 @@ export default {
           sortable: true
         },
         { name: 'nama', align: 'center', label: 'Nama Petani', field: 'nama', sortable: true },
-        { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jeniskelamin' },
+        { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jenis_kelamin' },
         { name: 'komoditas', label: 'Komoditas', field: 'komoditas' },
-        { name: 'id_poktan', label: 'ID Poktan', field: 'idpoktan', sortable: true },
-        { name: 'luas_lahan', label: 'Luas Lahan', field: 'luaslahan', sortable: true }
+        { name: 'id_poktan', label: 'ID Poktan', field: 'id_poktan', sortable: true },
+        { name: 'luas_lahan', label: 'Luas Lahan', field: 'luas_lahan', sortable: true }
       ],
       terpilih: [],
       // Dialog Action
@@ -301,9 +289,9 @@ export default {
     },
     loadData () {
       this.loading = true
-      this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
+      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('petani')
+        .get('api/petani')
         .then(response => {
           this.loading = false
           this.data = response.data.message

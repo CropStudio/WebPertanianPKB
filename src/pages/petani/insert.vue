@@ -11,7 +11,7 @@
                     label="NIK"
                     hint="NIK"
                     lazy-rules
-                    :rules="[ val => val && val.length > 0 || 'Please type your KTP']"
+                    :rules="[ val => val && val.length > 0 || 'Please type your NIK']"
             />
             <q-input
                     filled
@@ -71,8 +71,7 @@ export default {
           jenis_kelamin: this.data.jenis_kelamin,
           komoditas: this.data.komoditas,
           id_poktan: this.data.idpoktan,
-          luas_lahan: this.data.luaslahan,
-          id_user: this.data.iduser
+          luas_lahan: this.data.luaslahan
         })
           .then((response) => {
             this.$q.loading.hide()
@@ -101,8 +100,7 @@ export default {
           jenis_kelamin: this.data.jenis_kelamin,
           komoditas: this.data.komoditas,
           id_poktan: this.data.idpoktan,
-          luas_lahan: this.data.luaslahan,
-          id_user: this.data.iduser
+          luas_lahan: this.data.luaslahan
         })
           .then((response) => {
             this.$q.loading.hide()
@@ -130,7 +128,6 @@ export default {
       this.komoditas = null
       this.id_poktan = null
       this.luas_lahan = null
-      this.id_user = null
       this.accept = false
     }
   },
