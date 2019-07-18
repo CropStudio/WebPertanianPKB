@@ -40,7 +40,7 @@ export function simpan ({ commit }, payload) {
       })
   })
 }
-export function edit ({ commit }, payload) {
+export function editsimpan ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.put('api/jatah/' + payload.form.id, {
       jumlah: payload.form.jumlah,

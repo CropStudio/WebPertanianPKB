@@ -5,7 +5,7 @@
                 <q-table
                         :data="data"
                         :columns="columns"
-                        row-key="nik"
+                        row-key="id"
                         :selected.sync="terpilih"
                         selection="multiple"
                         :loading="loading"
@@ -34,7 +34,10 @@
                             <q-td auto-width>
                                 <q-toggle dense v-model="props.selected"/>
                             </q-td>
-                            <q-td key="jumlah" :props="props">{{ props.row.jumlah }}</q-td>
+                            <q-td key="jumlah" :props="props">
+                                {{ props.row.jumlah }}
+                                <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
+                            </q-td>
                             <q-td key="id_pupuk" :props="props">{{ props.row.id_pupuk }}</q-td>
                             <q-td key="id_poktan" :props="props">{{ props.row.id_poktan }}</q-td>
                             <q-td key="id_petani" :props="props">{{ props.row.id_petani }}</q-td>
@@ -42,12 +45,12 @@
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
                                 <div class="text-left q-gutter-x-xs">
-                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row._id)" label="Edit"/>
+                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row.id)" label="Edit"/>
                                     <q-btn
                                             color="red"
                                             dense
                                             size="sm"
-                                            @click="hapus(props.row._id)"
+                                            @click="hapus(props.row.id)"
                                             class="q-px-xs"
                                             icon="delete"
                                             label="Delete"
@@ -148,11 +151,11 @@ export default {
     }
   },
   methods: {
-    hapus (_id) {
+    hapus (id) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + _id + '?',
+          message: 'Ingin menghapus data ini?',
           cancel: true,
           persistent: true
         })
@@ -161,7 +164,7 @@ export default {
           this.$store
             .dispatch({
               type: 'jatah/hapus',
-              _id: _id
+              id: id
             })
             .then(response => {
               this.$q.loading.hide()
