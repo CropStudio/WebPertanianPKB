@@ -180,8 +180,7 @@ export default {
         { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jeniskelamin' },
         { name: 'komoditas', label: 'Komoditas', field: 'komoditas' },
         { name: 'id_poktan', label: 'ID Poktan', field: 'idpoktan', sortable: true },
-        { name: 'luas_lahan', label: 'Luas Lahan', field: 'luaslahan', sortable: true },
-        { name: 'id_user', label: 'ID User', field: 'iduser', sortable: true }
+        { name: 'luas_lahan', label: 'Luas Lahan', field: 'luaslahan', sortable: true }
       ],
       terpilih: [],
       // Dialog Action

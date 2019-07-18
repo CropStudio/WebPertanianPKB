@@ -43,12 +43,6 @@
                     label="Luas Lahan"
                     hint="Luas Lahan"
             />
-            <q-input
-                    filled
-                    v-model="data.id_user"
-                    label="Id User"
-                    hint="Id User"
-            />
             <div>
                 <q-btn label="Submit" type="submit" color="primary"/>
                 <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 // import example from './module-example'
 import user from './user'
+import petani from './petani'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       // example
-      user
+      user,
+      petani
     },
 
     // enable strict mode (adds overhead!)
@@ -24,11 +26,12 @@ export default function (/* { ssrContext } */) {
   })
   if (process.env.DEV && module.hot) {
     module.hot.accept([
-      './user'
+      './user', './petani'
     ], () => {
       const newUserr = require('./user').default
+      const newPetani = require('./petani').default
       Store.hotUpdate({ modules: {
-        user: newUserr
+        user: newUserr, petani: newPetani
       } })
     })
   }
