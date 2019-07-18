@@ -51,7 +51,7 @@ export default {
         // ini fungsi simpan edit
         this.$q.loading.show()
         this.$store.dispatch({
-          type: 'JatahPupuk/editsimpan',
+          type: 'jatah/editsimpan',
           _id: this.data._id,
           jumlah: this.data.jumlah,
           id_pupuk: this.data.idpupuk,
@@ -79,7 +79,7 @@ export default {
         // ini fungsi simpan
         this.$q.loading.show()
         this.$store.dispatch({
-          type: 'JatahPupuk/simpan',
+          type: 'jatah/simpan',
           jumlah: this.data.jumlah,
           id_pupuk: this.data.idpupuk,
           id_poktan: this.data.idpoktan,
@@ -114,7 +114,7 @@ export default {
   },
   mounted () {
     if (this.$route.params.id) {
-      this.$axios.get('JatahPupuk/' + this.$route.params.id)
+      this.$axios.get('jatah/' + this.$route.params.id)
         .then((response) => {
           if (response.data.status) {
             this.data = response.data.message

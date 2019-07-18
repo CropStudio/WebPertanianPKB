@@ -35,9 +35,9 @@
                                 <q-toggle dense v-model="props.selected"/>
                             </q-td>
                             <q-td key="jumlah" :props="props">{{ props.row.jumlah }}</q-td>
-                            <q-td key="idpupuk" :props="props">{{ props.row.id_pupuk }}</q-td>
-                            <q-td key="idpoktan" :props="props">{{ props.row.id_poktan }}</q-td>
-                            <q-td key="idpetani" :props="props">{{ props.row.id_petani }}</q-td>
+                            <q-td key="id_pupuk" :props="props">{{ props.row.id_pupuk }}</q-td>
+                            <q-td key="id_poktan" :props="props">{{ props.row.id_poktan }}</q-td>
+                            <q-td key="id_petani" :props="props">{{ props.row.id_petani }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
@@ -135,9 +135,9 @@ export default {
       filter: '',
       columns: [
         { name: 'jumlah', align: 'center', label: 'Jumlah Pupuk', field: 'jumlah', sortable: true },
-        { name: 'id_pupuk', label: 'Nama Pupuk', field: 'idpupuk' },
-        { name: 'id_poktan', label: 'Nama Poktan', field: 'idpoktan', sortable: true },
-        { name: 'id_petani', label: 'Nama Petani', field: 'idpetani', sortable: true }
+        { name: 'id_pupuk', label: 'Nama Pupuk', field: 'id_pupuk' },
+        { name: 'id_poktan', label: 'Nama Poktan', field: 'id_poktan', sortable: true },
+        { name: 'id_petani', label: 'Nama Petani', field: 'id_petani', sortable: true }
       ],
       terpilih: [],
       // Dialog Action
@@ -160,7 +160,7 @@ export default {
           this.$q.loading.show()
           this.$store
             .dispatch({
-              type: 'JatahPupuk/hapus',
+              type: 'jatah/hapus',
               _id: _id
             })
             .then(response => {
@@ -187,7 +187,7 @@ export default {
       if (!this.editMode) {
         // ini fungsi simpan ke database
         this.$store.dispatch({
-          type: 'JatahPupuk/simpan',
+          type: 'jatah/simpan',
           form: this.form
         })
           .then((response) => {
@@ -211,7 +211,7 @@ export default {
       } else {
         // ini fungsi edit ke database
         this.$store.dispatch({
-          type: 'JatahPupuk/editsimpan',
+          type: 'jatah/editsimpan',
           form: this.form
         })
           .then((response) => {
@@ -239,7 +239,7 @@ export default {
       this.editMode = true
       this.action = true
       this.$store.dispatch({
-        type: 'JatahPupuk/show',
+        type: 'jatah/show',
         id: id
       })
         .then((response) => {
@@ -258,9 +258,9 @@ export default {
     },
     loadData () {
       this.loading = true
-      this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
+      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('JatahPupuk')
+        .get('api/jatah')
         .then(response => {
           this.loading = false
           this.data = response.data.message

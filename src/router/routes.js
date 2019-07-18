@@ -49,7 +49,7 @@ const routes = [
     component: () => import('layouts/BaseLayout.vue'),
     meta: { requiresAuth: true },
     children: [
-      { path: 'JatahPupuk', component: () => import('pages/JatahPupuk/Index.vue') }
+      { path: 'jatah', component: () => import('pages/jatah/Index.vue') }
     ]
   }
 ]
