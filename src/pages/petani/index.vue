@@ -52,7 +52,7 @@
                                             color="red"
                                             dense
                                             size="sm"
-                                            @click="hapus(props.row._id)"
+                                            @click="hapus(props.row.id)"
                                             class="q-px-xs"
                                             icon="delete"
                                             label="Delete"
@@ -116,6 +116,7 @@
                                 outlined
                                 dense
                                 maxlength="50"
+                                type="number"
                                 v-model="form.id_poktan"
                                 label="ID Poktan"
                                 :rules="[
@@ -179,11 +180,11 @@ export default {
     }
   },
   methods: {
-    hapus (_id) {
+    hapus (id) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + _id + '?',
+          message: 'Ingin menghapus username: ' + id + '?',
           cancel: true,
           persistent: true
         })
@@ -192,7 +193,7 @@ export default {
           this.$store
             .dispatch({
               type: 'petani/hapus',
-              _id: _id
+              id: id
             })
             .then(response => {
               this.$q.loading.hide()

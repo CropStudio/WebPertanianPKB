@@ -14,8 +14,7 @@ export function simpan ({ commit }, payload) {
       jenis_kelamin: payload.form.jenis_kelamin,
       komoditas: payload.form.komoditas,
       id_poktan: payload.form.id_poktan,
-      luas_lahan: payload.form.luas_lahan,
-      id_user: payload.form.id_user
+      luas_lahan: payload.form.luas_lahan
     }))
       .then((response) => {
         resolve(response)
@@ -34,8 +33,7 @@ export function editsimpan ({ commit }, payload) {
       jenis_kelamin: payload.form.jenis_kelamin,
       komoditas: payload.form.komoditas,
       id_poktan: payload.form.id_poktan,
-      luas_lahan: payload.form.luas_lahan,
-      id_user: payload.form.id_user
+      luas_lahan: payload.form.luas_lahan
     }))
       .then((response) => {
         resolve(response)
