@@ -5,7 +5,7 @@
                 <q-table
                         :data="data"
                         :columns="columns"
-                        row-key="nik"
+                        row-key="id"
                         :selected.sync="terpilih"
                         selection="multiple"
                         :loading="loading"
@@ -34,24 +34,22 @@
                             <q-td auto-width>
                                 <q-toggle dense v-model="props.selected"/>
                             </q-td>
-                            <q-td key="nik" :props="props">
-                                {{ props.row.nik }}
+                            <q-td key="nama" :props="props">
+                                {{ props.row.nama }}
                                 <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
                             </q-td>
-                            <q-td key="user" :props="props">{{ props.row.user }}</q-td>
-                            <q-td key="nama" :props="props">{{ props.row.nama }}</q-td>
-                            <q-td key="tgllahir" :props="props">{{ props.row.tgl_lahir }}</q-td>
-                            <q-td key="jeniskelamin" :props="props">{{ props.row.jenis_kelamin }}</q-td>
+                            <q-td key="tanggal_lahir" :props="props">{{ props.row.tanggal_lahir }}</q-td>
+                            <q-td key="jenis_kelamin" :props="props">{{ props.row.jenis_kelamin }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
                                 <div class="text-left q-gutter-x-xs">
-                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row._id)" label="Edit"/>
+                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row.id)" label="Edit"/>
                                     <q-btn
                                             color="red"
                                             dense
                                             size="sm"
-                                            @click="hapus(props.row._id)"
+                                            @click="hapus(props.row.id)"
                                             class="q-px-xs"
                                             icon="delete"
                                             label="Delete"
@@ -78,16 +76,6 @@
                                 outlined
                                 dense
                                 maxlength="50"
-                                v-model="form.user"
-                                label="USER"
-                                :rules="[
-                  val => !!val || 'NIK dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
                                 v-model="form.nama"
                                 label="Nama Lengkap"
                                 :rules="[
@@ -95,21 +83,21 @@
                   ]"
                         ></q-input>
                         <q-input label="Tanggal Lahir" outlined
-                                 dense v-model="date" mask="date" :rules="['date']">
+                                 dense v-model="form.tanggal_lahir" mask="date" :rules="['date']">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                                    <q-date v-model="form.tanggal_lahir" @input="() => $refs.qDateProxy.hide()" />
                                 </q-popup-proxy>
                             </q-icon>
                         </template>
                     </q-input>
                         <q-select
-                                outlined dense v-model="form.jenis_kelamin"
+                                outlined v-model="form.jenis_kelamin"
                                 :options="['Perempuan', 'Laki-Laki']"
                                 label="Jenis Kelamin"
                                 :rules="[
-                  val => !!val || 'Status Keluarga dibutuhkan'
+                  val => !!val || 'Jenis Kelamin dibutuhkan'
                   ]"/>
 
                     </q-card-section>
@@ -135,10 +123,9 @@ export default {
       loading: false,
       filter: '',
       columns: [
-        { name: 'user', align: 'center', label: 'ID user', field: 'user', sortable: true },
-        { name: 'nama', label: 'Nama', field: 'nama' },
-        { name: 'tgl_lahir', label: 'Tanggal Lahir', field: 'tgl_lahir' },
-        { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jeniskelamin' }
+        { name: 'nama', align: 'center', label: 'Nama', field: 'nama', sortable: true },
+        { name: 'tanggal_lahir', label: 'Tanggal Lahir', field: 'tanggal_lahir' },
+        { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jenis_kelamin' }
       ],
       terpilih: [],
       // Dialog Action
@@ -149,11 +136,11 @@ export default {
     }
   },
   methods: {
-    hapus (_id) {
+    hapus (id) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + _id + '?',
+          message: 'Ingin menghapus data ini ?',
           cancel: true,
           persistent: true
         })
@@ -162,7 +149,7 @@ export default {
           this.$store
             .dispatch({
               type: 'anak/hapus',
-              _id: _id
+              id: id
             })
             .then(response => {
               this.$q.loading.hide()
@@ -259,9 +246,9 @@ export default {
     },
     loadData () {
       this.loading = true
-      this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
+      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('anak')
+        .get('api/anak')
         .then(response => {
           this.loading = false
           this.data = response.data.message

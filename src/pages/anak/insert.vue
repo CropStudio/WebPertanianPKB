@@ -7,21 +7,15 @@
         >
             <q-input
                     filled
-                    v-model="data.user"
-                    label="USER"
-                    hint="USER"
-            />
-            <q-input
-                    filled
                     v-model="data.nama"
                     label="NAMA"
                     hint="NAMA"
             />
             <q-input
                     filled
-                    v-model="data.tgl_lahir"
-                    label="Kabupaten"
-                    hint="Kabupaten"
+                    v-model="data.tanggal_lahir"
+                    label="Tanggal Lahir"
+                    hint="Tanggal lahir"
             />
             <q-input
                     filled
@@ -51,9 +45,8 @@ export default {
         this.$q.loading.show()
         this.$store.dispatch({
           type: 'anak/editsimpan',
-          user: this.data.user,
           nama: this.data.nama,
-          tgl_lahir: this.data.tgl_lahir,
+          tanggal_lahir: this.data.tanggal_lahir,
           jenis_kelamin: this.data.jenis_kelamin
         })
           .then((response) => {
@@ -78,9 +71,8 @@ export default {
         this.$q.loading.show()
         this.$store.dispatch({
           type: 'anak/simpan',
-          user: this.data.user,
           nama: this.data.nama,
-          tgl_lahir: this.data.tgl_lahir,
+            tanggal_lahir: this.data.tanggal_lahir,
           jenis_kelamin: this.data.jenis_kelamin
         })
           .then((response) => {
@@ -102,7 +94,6 @@ export default {
       }
     },
     onReset () {
-      this.user = null
       this.nama = null
       this.tgl_lahir = null
       this.jenis_kelamin = null
@@ -111,7 +102,7 @@ export default {
   },
   mounted () {
     if (this.$route.params.id) {
-      this.$axios.get('anak/' + this.$route.params.id)
+      this.$axios.get('api/anak/' + this.$route.params.id)
         .then((response) => {
           if (response.data.status) {
             this.data = response.data.message

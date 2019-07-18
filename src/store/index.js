@@ -6,6 +6,7 @@ import user from './user'
 import petani from './petani'
 import jatah from './jatah'
 import poktan from './poktan'
+import anak from './anak'
 import pupuk from './pupuk'
 
 Vue.use(Vuex)
@@ -23,6 +24,7 @@ export default function (/* { ssrContext } */) {
       jatah,
       petani,
       poktan,
+      anak,
       pupuk
     },
 
@@ -36,6 +38,8 @@ export default function (/* { ssrContext } */) {
       './petani',
       './jatah',
       './poktan',
+      './anak',
+      './poktan',
       './pupuk'
     ], () => {
       const newUserr = require('./user').default
@@ -43,12 +47,14 @@ export default function (/* { ssrContext } */) {
       const newPoktan = require('./poktan').default
       const newJatah = require('./jatah').default
       const newPupuk = require('./pupuk').default
+      const newAnak = require('./anak').default
       Store.hotUpdate({ modules: {
         user: newUserr,
         petani: newPetani,
         poktan: newPoktan,
         jatah: newJatah,
-        pupuk: newPupuk
+        pupuk: newPupuk,
+        anak: newAnak
       } })
     })
   }

@@ -155,7 +155,7 @@ export default {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus data ini?',
+          message: 'Ingin menghapus data ini ?',
           cancel: true,
           persistent: true
         })

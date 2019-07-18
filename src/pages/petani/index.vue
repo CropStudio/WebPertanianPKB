@@ -5,7 +5,7 @@
                 <q-table
                         :data="data"
                         :columns="columns"
-                        row-key="nik"
+                        row-key="id"
                         :selected.sync="terpilih"
                         selection="multiple"
                         :loading="loading"
@@ -100,7 +100,7 @@
                                 :options="['Perempuan', 'Laki-Laki']"
                                 label="Jenis Kelamin"
                                 :rules="[
-                  val => !!val || 'Status Keluarga dibutuhkan'
+                  val => !!val || 'Jenis Kelamin dibutuhkan'
                   ]"/>
                         <q-input
                                 outlined
@@ -184,7 +184,7 @@ export default {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + id + '?',
+          message: 'Ingin menghapus data ini ?',
           cancel: true,
           persistent: true
         })
