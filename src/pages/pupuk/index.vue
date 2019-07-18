@@ -12,7 +12,7 @@
                         :filter="filter"
                 >
                     <template v-slot:top>
-                        <span class="text-h5 text-weight-light">Jatah Pupuk</span>
+                        <span class="text-h5 text-weight-light">Data Pupuk</span>
                         <q-space></q-space>
                         <q-input outlined dense debounce="300" color="primary" v-model.trim="filter">
                             <template v-slot:append>
@@ -34,10 +34,8 @@
                             <q-td auto-width>
                                 <q-toggle dense v-model="props.selected"/>
                             </q-td>
-                            <q-td key="jumlah" :props="props">{{ props.row.jumlah }}</q-td>
-                            <q-td key="idpupuk" :props="props">{{ props.row.id_pupuk }}</q-td>
-                            <q-td key="idpoktan" :props="props">{{ props.row.id_poktan }}</q-td>
-                            <q-td key="idpetani" :props="props">{{ props.row.id_petani }}</q-td>
+                            <q-td key="nama" :props="props">{{ props.row.nama }}</q-td>
+                            <q-td key="jenis" :props="props">{{ props.row.jenis }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
@@ -62,7 +60,7 @@
         <q-dialog v-model="action" persistent>
             <q-card style="width: 500px; max-width: 80vw;">
                 <q-card-section class="row items-center">
-                    <div class="text-h6">{{ editMode ? 'Edit Jatah Pupuk' : 'Tambah Jatah Pupuk'}}</div>
+                    <div class="text-h6">{{ editMode ? 'Edit Data Pupuk' : 'Tambah Data Pupuk'}}</div>
                     <q-space/>
                     <q-btn icon="close" flat round dense @click="closeDialog()"/>
                 </q-card-section>
@@ -74,17 +72,7 @@
                                 outlined
                                 dense
                                 maxlength="50"
-                                v-model="form.jumlah"
-                                label="Jumlah Pupuk"
-                                :rules="[
-                  val => !!val || 'Jumlah Pupuk dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_pupuk"
+                                v-model="form.nama"
                                 label="Nama Pupuk"
                                 :rules="[
                   val => !!val || 'Nama Pupuk dibutuhkan'
@@ -94,20 +82,10 @@
                                 outlined
                                 dense
                                 maxlength="50"
-                                v-model="form.id_poktan"
-                                label="Nama Poktan"
+                                v-model="form.jenis"
+                                label="Jenis Pupuk"
                                 :rules="[
-                  val => !!val || 'Nama Poktan dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_petani"
-                                label="Nama Petani"
-                                :rules="[
-                  val => !!val || 'Nama Petani dibutuhkan'
+                  val => !!val || 'Jenis Pupuk dibutuhkan'
                   ]"
                         ></q-input>
 
@@ -134,10 +112,8 @@ export default {
       loading: false,
       filter: '',
       columns: [
-        { name: 'jumlah', align: 'center', label: 'Jumlah Pupuk', field: 'jumlah', sortable: true },
-        { name: 'id_pupuk', label: 'Nama Pupuk', field: 'idpupuk' },
-        { name: 'id_poktan', label: 'Nama Poktan', field: 'idpoktan', sortable: true },
-        { name: 'id_petani', label: 'Nama Petani', field: 'idpetani', sortable: true }
+        { name: 'nama', align: 'center', label: 'Nama Pupuk', field: 'nama', sortable: true },
+        { name: 'jenis', label: 'Jenis Pupuk', field: 'jenis' }
       ],
       terpilih: [],
       // Dialog Action
@@ -160,7 +136,7 @@ export default {
           this.$q.loading.show()
           this.$store
             .dispatch({
-              type: 'JatahPupuk/hapus',
+              type: 'pupuk/hapus',
               _id: _id
             })
             .then(response => {
@@ -187,7 +163,7 @@ export default {
       if (!this.editMode) {
         // ini fungsi simpan ke database
         this.$store.dispatch({
-          type: 'JatahPupuk/simpan',
+          type: 'pupuk/simpan',
           form: this.form
         })
           .then((response) => {
@@ -211,7 +187,7 @@ export default {
       } else {
         // ini fungsi edit ke database
         this.$store.dispatch({
-          type: 'JatahPupuk/editsimpan',
+          type: 'pupuk/editsimpan',
           form: this.form
         })
           .then((response) => {
@@ -239,7 +215,7 @@ export default {
       this.editMode = true
       this.action = true
       this.$store.dispatch({
-        type: 'JatahPupuk/show',
+        type: 'pupuk/show',
         id: id
       })
         .then((response) => {
@@ -260,7 +236,7 @@ export default {
       this.loading = true
       this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('JatahPupuk')
+        .get('pupuk')
         .then(response => {
           this.loading = false
           this.data = response.data.message

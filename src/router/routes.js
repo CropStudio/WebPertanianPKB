@@ -41,6 +41,14 @@ const routes = [
     component: () => import('layouts/BaseLayout.vue'),
     meta: { requiresAuth: true },
     children: [
+      { path: 'pupuk', component: () => import('pages/pupuk/Index.vue') }
+    ]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/BaseLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
       { path: 'JatahPupuk', component: () => import('pages/JatahPupuk/Index.vue') }
     ]
   }
