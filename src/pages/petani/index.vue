@@ -166,10 +166,10 @@ export default {
           sortable: true
         },
         { name: 'nama', align: 'center', label: 'Nama Petani', field: 'nama', sortable: true },
-        { name: 'jenis_kelamin', label: 'Jenis Kelamin', field: 'jenis_kelamin' },
-        { name: 'komoditas', label: 'Komoditas', field: 'komoditas' },
-        { name: 'id_poktan', label: 'ID Poktan', field: 'id_poktan', sortable: true },
-        { name: 'luas_lahan', label: 'Luas Lahan', field: 'luas_lahan', sortable: true }
+        { name: 'jenis_kelamin', align: 'center', label: 'Jenis Kelamin', field: 'jenis_kelamin' },
+        { name: 'komoditas', align: 'center', label: 'Komoditas', field: 'komoditas' },
+        { name: 'id_poktan', align: 'center', label: 'ID Poktan', field: 'id_poktan', sortable: true },
+        { name: 'luas_lahan', align: 'center', label: 'Luas Lahan', field: 'luas_lahan', sortable: true }
       ],
       terpilih: [],
       // Dialog Action

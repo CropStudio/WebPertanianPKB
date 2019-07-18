@@ -5,7 +5,7 @@
                 <q-table
                         :data="data"
                         :columns="columns"
-                        row-key="nik"
+                        row-key="id"
                         :selected.sync="terpilih"
                         selection="multiple"
                         :loading="loading"
@@ -34,18 +34,21 @@
                             <q-td auto-width>
                                 <q-toggle dense v-model="props.selected"/>
                             </q-td>
-                            <q-td key="nama" :props="props">{{ props.row.nama }}</q-td>
+                            <q-td key="nama" :props="props">
+                                {{ props.row.nama }}
+                                <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
+                            </q-td>
                             <q-td key="jenis" :props="props">{{ props.row.jenis }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
                                 <div class="text-left q-gutter-x-xs">
-                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row._id)" label="Edit"/>
+                                    <q-btn color="primary" dense size="sm" class="q-px-xs" icon="edit" @click="edit(props.row.id)" label="Edit"/>
                                     <q-btn
                                             color="red"
                                             dense
                                             size="sm"
-                                            @click="hapus(props.row._id)"
+                                            @click="hapus(props.row.id)"
                                             class="q-px-xs"
                                             icon="delete"
                                             label="Delete"
@@ -113,7 +116,7 @@ export default {
       filter: '',
       columns: [
         { name: 'nama', align: 'center', label: 'Nama Pupuk', field: 'nama', sortable: true },
-        { name: 'jenis', label: 'Jenis Pupuk', field: 'jenis' }
+        { name: 'jenis', align: 'center', label: 'Jenis Pupuk', field: 'jenis' }
       ],
       terpilih: [],
       // Dialog Action
@@ -128,7 +131,7 @@ export default {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus username: ' + id + '?',
+          message: 'Ingin menghapus data ini?',
           cancel: true,
           persistent: true
         })
@@ -234,9 +237,9 @@ export default {
     },
     loadData () {
       this.loading = true
-      this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
+      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('pupuk')
+        .get('api/pupuk')
         .then(response => {
           this.loading = false
           this.data = response.data.message

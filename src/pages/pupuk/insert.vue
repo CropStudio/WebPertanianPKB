@@ -39,7 +39,7 @@ export default {
         this.$q.loading.show()
         this.$store.dispatch({
           type: 'pupuk/editsimpan',
-          _id: this.data._id,
+          _id: this.data.id,
           nama: this.data.nama,
           jenis: this.data.jenis
         })
@@ -87,7 +87,7 @@ export default {
       }
     },
     onReset () {
-      this._id = null
+      this.id = null
       this.nama = null
       this.jenis = null
       this.accept = false

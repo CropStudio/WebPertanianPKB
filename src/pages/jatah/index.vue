@@ -138,9 +138,9 @@ export default {
       filter: '',
       columns: [
         { name: 'jumlah', align: 'center', label: 'Jumlah Pupuk', field: 'jumlah', sortable: true },
-        { name: 'id_pupuk', label: 'Nama Pupuk', field: 'id_pupuk' },
-        { name: 'id_poktan', label: 'Nama Poktan', field: 'id_poktan', sortable: true },
-        { name: 'id_petani', label: 'Nama Petani', field: 'id_petani', sortable: true }
+        { name: 'id_pupuk', align: 'center', label: 'Nama Pupuk', field: 'id_pupuk' },
+        { name: 'id_poktan', align: 'center', label: 'Nama Poktan', field: 'id_poktan', sortable: true },
+        { name: 'id_petani', align: 'center', label: 'Nama Petani', field: 'id_petani', sortable: true }
       ],
       terpilih: [],
       // Dialog Action

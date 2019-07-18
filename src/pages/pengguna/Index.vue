@@ -206,7 +206,7 @@ export default {
           name: 'nik',
           required: true,
           label: 'NIK',
-          align: 'left',
+          align: 'center',
           field: 'nik',
           sortable: true
         },
