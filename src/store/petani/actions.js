@@ -8,7 +8,7 @@ const qs = require('qs')
 export function simpan ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.defaults.headers.common['token'] = Cookies.get('token')
-    axiosInstance.post('petani', qs.stringify({
+    axiosInstance.post('api/petani', qs.stringify({
       nik: payload.form.nik,
       nama: payload.form.nama,
       jenis_kelamin: payload.form.jenis_kelamin,
@@ -28,7 +28,7 @@ export function simpan ({ commit }, payload) {
 export function editsimpan ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.defaults.headers.common['token'] = Cookies.get('token')
-    axiosInstance.put('petani/' + payload.form._id, qs.stringify({
+    axiosInstance.put('api/petani/' + payload.form._id, qs.stringify({
       nik: payload.form.nik,
       nama: payload.form.nama,
       jenis_kelamin: payload.form.jenis_kelamin,
@@ -48,7 +48,7 @@ export function editsimpan ({ commit }, payload) {
 export function hapus ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.defaults.headers.common['token'] = Cookies.get('token')
-    axiosInstance.delete('petani/' + payload._id)
+    axiosInstance.delete('api/petani/' + payload._id)
       .then((response) => {
         resolve(response)
       })
@@ -60,7 +60,7 @@ export function hapus ({ commit }, payload) {
 export function show ({ commit }, payload) {
   axiosInstance.defaults.headers.common['token'] = Cookies.get('token')
   return new Promise((resolve, reject) => {
-    axiosInstance.get('petani/' + payload.id)
+    axiosInstance.get('api/petani/' + payload.id)
       .then((response) => {
         resolve(response)
       })
