@@ -38,9 +38,9 @@
                                 {{ props.row.jumlah }}
                                 <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
                             </q-td>
-                            <q-td key="id_pupuk" :props="props">{{ props.row.id_pupuk }}</q-td>
-                            <q-td key="id_poktan" :props="props">{{ props.row.id_poktan }}</q-td>
-                            <q-td key="id_petani" :props="props">{{ props.row.id_petani }}</q-td>
+                            <q-td key="nama_pupuk" :props="props">{{ props.row.nama_pupuk }}</q-td>
+                            <q-td key="nama_poktan" :props="props">{{ props.row.nama_poktan }}</q-td>
+                            <q-td key="nama_petani" :props="props">{{ props.row.nama_petani }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
@@ -138,9 +138,9 @@ export default {
       filter: '',
       columns: [
         { name: 'jumlah', align: 'center', label: 'Jumlah Pupuk', field: 'jumlah', sortable: true },
-        { name: 'id_pupuk', align: 'center', label: 'Nama Pupuk', field: 'id_pupuk' },
-        { name: 'id_poktan', align: 'center', label: 'Nama Poktan', field: 'id_poktan', sortable: true },
-        { name: 'id_petani', align: 'center', label: 'Nama Petani', field: 'id_petani', sortable: true }
+        { name: 'nama_pupuk', align: 'center', label: 'Nama Pupuk', field: 'nama_pupuk' },
+        { name: 'nama_poktan', align: 'center', label: 'Nama Poktan', field: 'nama_poktan', sortable: true },
+        { name: 'nama_petani', align: 'center', label: 'Nama Petani', field: 'nama_petani', sortable: true }
       ],
       terpilih: [],
       // Dialog Action
