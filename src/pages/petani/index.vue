@@ -41,7 +41,7 @@
                             <q-td key="nama" :props="props">{{ props.row.nama }}</q-td>
                             <q-td key="jenis_kelamin" :props="props">{{ props.row.jenis_kelamin }}</q-td>
                             <q-td key="komoditas" :props="props">{{ props.row.komoditas }}</q-td>
-                            <q-td key="id_poktan" :props="props">{{ props.row.id_poktan }}</q-td>
+                            <q-td key="nama_poktan" :props="props">{{ props.row.nama_poktan }}</q-td>
                             <q-td key="luas_lahan" :props="props">{{ props.row.luas_lahan }}</q-td>
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
@@ -52,7 +52,7 @@
                                             color="red"
                                             dense
                                             size="sm"
-                                            @click="hapus(props.row.id)"
+                                            @click="hapus(props.row.id, props.row.nik)"
                                             class="q-px-xs"
                                             icon="delete"
                                             label="Delete"
@@ -96,12 +96,13 @@
                   ]"
                         ></q-input>
                         <q-select
-                                outlined v-model="form.jenis_kelamin"
-                                :options="['Perempuan', 'Laki-Laki']"
-                                label="Jenis Kelamin"
-                                :rules="[
-                  val => !!val || 'Jenis Kelamin dibutuhkan'
-                  ]"/>
+                          dense
+                          outlined v-model="form.jenis_kelamin"
+                          :options="['Perempuan', 'Laki-Laki']"
+                          label="Jenis Kelamin"
+                          :rules="[
+                          val => !!val || 'Jenis Kelamin dibutuhkan'
+                          ]"/>
                         <q-input
                                 outlined
                                 dense
@@ -116,16 +117,16 @@
                                 outlined
                                 dense
                                 maxlength="50"
-                                type="number"
-                                v-model="form.id_poktan"
-                                label="ID Poktan"
+                                v-model="form.nama_poktan"
+                                label="Nama Poktan"
                                 :rules="[
-                  val => !!val || 'ID Poktan dibutuhkan'
+                  val => !!val || 'Nama Poktan dibutuhkan'
                   ]"
                         ></q-input>
                         <q-input
                                 outlined
                                 dense
+                                type="number"
                                 maxlength="50"
                                 v-model="form.luas_lahan"
                                 label="Luas Lahan"
@@ -168,7 +169,7 @@ export default {
         { name: 'nama', align: 'center', label: 'Nama Petani', field: 'nama', sortable: true },
         { name: 'jenis_kelamin', align: 'center', label: 'Jenis Kelamin', field: 'jenis_kelamin' },
         { name: 'komoditas', align: 'center', label: 'Komoditas', field: 'komoditas' },
-        { name: 'id_poktan', align: 'center', label: 'ID Poktan', field: 'id_poktan', sortable: true },
+        { name: 'nama_poktan', align: 'center', label: 'Poktan', field: 'nama_poktan', sortable: true },
         { name: 'luas_lahan', align: 'center', label: 'Luas Lahan', field: 'luas_lahan', sortable: true }
       ],
       terpilih: [],
@@ -180,11 +181,11 @@ export default {
     }
   },
   methods: {
-    hapus (id) {
+    hapus (id, nik) {
       this.$q
         .dialog({
           title: 'Konfirmasi Hapus',
-          message: 'Ingin menghapus data ini ?',
+          message: 'Ingin menghapus NIK: ' + nik + '?',
           cancel: true,
           persistent: true
         })

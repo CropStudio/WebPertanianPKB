@@ -45,7 +45,11 @@
                 />
               </q-td>
               <q-td key="nama" :props="props">{{props.row.nama}}</q-td>
-              <q-td key="role" :props="props">{{props.row.role}}</q-td>
+              <q-td key="role" v-if="props.row.role === 1" :props="props">Admin</q-td>
+              <q-td key="role" v-else-if="props.row.role === 2" :props="props">Petani</q-td>
+              <q-td key="role" v-else-if="props.row.role === 3" :props="props">Poktan</q-td>
+              <q-td key="role" v-else-if="props.row.role === 4" :props="props">Gubernur</q-td>
+              <q-td key="role" v-else :props="props">Tidak ada role</q-td>
               <q-td key="ktp" :props="props">{{props.row.ktp}}</q-td>
             </q-tr>
             <q-tr v-show="props.expand" :props="props">
@@ -101,6 +105,18 @@
                   val => !!val || 'Nama Lengkap dibutuhkan'
                   ]"
             ></q-input>
+            <q-input
+              outlined
+              dense
+              type="number"
+              maxlength="20"
+              v-model="form.no_hp"
+              hint="Maksimal 12 huruf"
+              label="No Handphone"
+              :rules="[
+                  val => !!val || 'Nomor Handphone dibutuhkan'
+                  ]"
+            ></q-input>
             <q-toggle
                 v-if="editMode"
                 v-model="gantiPass"
@@ -151,8 +167,8 @@
                 label="Admin"
                 color="green"
               />
-              <q-radio keep-color v-model.trim="form.role" :val=2 label="POKTAN" color="blue"/>
-              <q-radio keep-color v-model.trim="form.role" :val=3 label="Petani" color="red"/>
+              <q-radio keep-color v-model.trim="form.role" :val=3 label="POKTAN" color="blue"/>
+              <q-radio keep-color v-model.trim="form.role" :val=2 label="Petani" color="red"/>
               <q-radio
                 keep-color
                 v-model.trim="form.role"

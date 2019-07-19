@@ -137,7 +137,7 @@ export default {
       loading: false,
       filter: '',
       columns: [
-        { name: 'nama', align: 'center', label: 'Nama Petani', field: 'nama', sortable: true },
+        { name: 'nama', align: 'center', label: 'Nama Poktan', field: 'nama', sortable: true },
         { name: 'kabupaten', label: 'Kabupaten', field: 'kabupaten' },
         { name: 'kecamatan', label: 'Kecamatan', field: 'kecamatan' },
         { name: 'desa', label: 'Desa', field: 'desa', sortable: true }

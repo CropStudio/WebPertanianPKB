@@ -30,7 +30,8 @@ export function simpan ({ commit }, payload) {
       nama: payload.form.nama,
       nik: payload.form.nik,
       role: payload.form.role,
-      password: payload.form.password
+      password: payload.form.password,
+      no_hp: payload.form.no_hp
     })
       .then((response) => {
         resolve(response)
@@ -46,7 +47,8 @@ export function edit ({ commit }, payload) {
       nama: payload.form.nama,
       nik: payload.form.nik,
       role: payload.form.role,
-      password: payload.form.password
+      password: payload.form.password,
+      no_hp: payload.form.no_hp
     })
       .then((response) => {
         resolve(response)
