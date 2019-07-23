@@ -148,6 +148,13 @@
 export default {
   data () {
     return {
+      error: [],
+      parse_header: [],
+      parse_csv: [],
+      sortOrders: {},
+      sortKey: '',
+      delimited: ';',
+
       // tabel
       data: [],
       loading: false,
@@ -168,6 +175,94 @@ export default {
     }
   },
   methods: {
+    csvJSON (csv) {
+      var vm = this
+      var lines = csv.split('\r\n')
+      console.log(csv)
+      var result = []
+      var delimited = this.delimited
+      var headers = lines[0].split(delimited)
+      console.log(headers)
+      vm.parse_header = lines[0].split(delimited)
+      lines[0].split(delimited).forEach(function (key) {
+        vm.sortOrders[key] = 1
+      })
+
+      lines.map((line, indexLine) => {
+        if (indexLine < 1) return // Jump header line
+        var obj = {}
+        var currentline = line.split(this.delimited)
+
+        headers.map(function (header, indexHeader) {
+          obj[header] = currentline[indexHeader]
+        })
+        result.push(obj)
+      })
+      result.pop() // remove the last item because undefined values
+      // console.log(result)
+      return result // JavaScript object
+    },
+    sortBy: function (key) {
+      var vm = this
+      vm.sortKey = key
+      vm.sortOrders[key] = vm.sortOrders[key] * -1
+    },
+    loadCSV (e) {
+      var vm = this
+      if (window.FileReader) {
+        if (e.target.files[0].type === 'application/vnd.ms-excel' || e.target.files[0].type === 'text/csv') {
+          var reader = new FileReader()
+          reader.readAsText(e.target.files[0])
+          // Handle errors load
+          reader.onload = function (event) {
+            var csv = event.target.result
+            vm.parse_csv = vm.csvJSON(csv)
+          }
+          reader.onerror = function (evt) {
+            if (evt.target.error.name === 'NotReadableError') {
+              alert('Tidak bisa membaca file!')
+            }
+          }
+        } else {
+          this.$q.notify({
+            icon: 'ion-alert',
+            color: 'yellow-10',
+            message: 'File format bukan CSV! Silahkan cek file format anda.'
+          })
+        }
+      } else {
+        alert('FileReader are not supported in this browser.')
+      }
+    },
+    uploadData () {
+      // console.log(this.parse_csv)
+      this.$q.loading.show()
+      this.$store
+        .dispatch({
+          type: 'pembayaran/uploadData',
+          data: this.parse_csv
+        })
+        .then(response => {
+          if (response.success) {
+            this.$q.notify({
+              icon: 'ion-checkmark',
+              color: 'positive',
+              message: 'Berhasil mengupload data!'
+            })
+            this.$q.loading.hide()
+            this.closeDialog()
+            this.$emit('loadData')
+          } else {
+            this.$q.loading.hide()
+            this.$q.notify({
+              icon: 'ion-close',
+              color: 'negative',
+              message: response.message
+            })
+            this.error = response.data
+          }
+        })
+    },
     hapus (id) {
       this.$q
         .dialog({
