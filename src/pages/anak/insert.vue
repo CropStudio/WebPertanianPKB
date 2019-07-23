@@ -72,7 +72,7 @@ export default {
         this.$store.dispatch({
           type: 'anak/simpan',
           nama: this.data.nama,
-            tanggal_lahir: this.data.tanggal_lahir,
+          tanggal_lahir: this.data.tanggal_lahir,
           jenis_kelamin: this.data.jenis_kelamin
         })
           .then((response) => {

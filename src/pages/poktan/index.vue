@@ -28,6 +28,15 @@
                                 dense
                                 @click="tambah()"
                         />
+                      <q-btn
+                        icon="ion-cloud-upload"
+                        unelevated
+                        label="Import"
+                        size="sm"
+                        class="q-ml-xs q-mr-xs q-pa-sm bg-blue-5 text-white"
+                        dense
+                        @click="upload = true"
+                      />
                     </template>
                     <template v-slot:body="props">
                         <q-tr :props="props">
@@ -126,6 +135,13 @@
                 </q-inner-loading>
             </q-card>
         </q-dialog>
+      <q-dialog v-model="upload">
+        <q-card class="text-white bg-blue-grey-5">
+          <q-card-section>
+            <div class="text-h6 text-weight-light">Upload</div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </q-page>
 </template>
 <script>
@@ -144,6 +160,7 @@ export default {
       ],
       terpilih: [],
       // Dialog Action
+      upload: false,
       editMode: false,
       action: false,
       form: {},

@@ -3,27 +3,7 @@ export function someAction (context) {
 }
 */
 import { axiosInstance } from 'boot/axios'
-import { Cookies } from 'quasar'
-
-export function logout ({ commit }) {
-  return new Promise((resolve, reject) => {
-    commit('logout')
-    Cookies.remove('token', { path: '/' })
-    delete axiosInstance.defaults.headers.common['Authorization']
-    resolve()
-  })
-}
-export function retrieveInfo ({ commit }) {
-  return new Promise((resolve, reject) => {
-    axiosInstance.get('api/pupuk')
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((response) => {
-        reject()
-      })
-  })
-}
+// import { Cookies } from 'quasar'
 export function simpan ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.post('api/pupuk', {
@@ -66,6 +46,17 @@ export function hapus ({ commit }, payload) {
 export function show ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.get('api/pupuk/' + payload.id)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((response) => {
+        reject()
+      })
+  })
+}
+export function index ({ commit }) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.get('api/pupuk')
       .then((response) => {
         resolve(response)
       })

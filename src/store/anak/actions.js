@@ -3,27 +3,7 @@ export function someAction (context) {
 }
 */
 import { axiosInstance } from 'boot/axios'
-import { Cookies } from 'quasar'
-
-export function logout ({ commit }) {
-  return new Promise((resolve, reject) => {
-    commit('logout')
-    Cookies.remove('token', { path: '/' })
-    delete axiosInstance.defaults.headers.common['Authorization']
-    resolve()
-  })
-}
-export function retrieveInfo ({ commit }) {
-  return new Promise((resolve, reject) => {
-    axiosInstance.get('api/anak')
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((response) => {
-        reject()
-      })
-  })
-}
+// import { Cookies } from 'quasar'
 export function simpan ({ commit }, payload) {
   return new Promise((resolve, reject) => {
     axiosInstance.post('api/anak', {

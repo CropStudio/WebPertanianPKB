@@ -67,3 +67,14 @@ export function show ({ commit }, payload) {
       })
   })
 }
+export function index ({ commit }) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.get('api/petani')
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((response) => {
+        reject()
+      })
+  })
+}

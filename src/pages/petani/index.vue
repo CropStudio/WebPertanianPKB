@@ -64,7 +64,7 @@
                 </q-table>
             </div>
         </div>
-        <q-dialog v-model="action" persistent>
+        <q-dialog @show="bukaDialog" v-model="action" persistent>
             <q-card style="width: 500px; max-width: 80vw;">
                 <q-card-section class="row items-center">
                     <div class="text-h6">{{ editMode ? 'Edit Data Petani' : 'Tambah Data Petani'}}</div>
@@ -113,27 +113,53 @@
                   val => !!val || 'Komoditas dibutuhkan'
                   ]"
                         ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.nama_poktan"
-                                label="Nama Poktan"
-                                :rules="[
-                  val => !!val || 'Nama Poktan dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                type="number"
-                                maxlength="50"
-                                v-model="form.luas_lahan"
-                                label="Luas Lahan"
-                                :rules="[
+
+                      <q-input
+                        outlined
+                        dense
+                        type="number"
+                        maxlength="50"
+                        v-model="form.luas_lahan"
+                        label="Luas Lahan"
+                        :rules="[
                   val => !!val || 'Luas Lahan dibutuhkan'
                   ]"
-                        ></q-input>
+                      ></q-input>
+                      <q-select
+                      :rules="[
+                      val => !!val || 'Nama Poktan dibutuhkan'
+                      ]"
+                      outlined
+                      v-if="!form.nama_poktan"
+                      v-model="form.id_poktan"
+                      :options="poktanOptions"
+                      label="Nama Poktan"
+                      @filter="filterPoktan"
+                      use-input
+                      map-options
+                      clearable
+                      emit-value
+                      dense
+                      >
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-grey">
+                            Tidak ada data
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      </q-select>
+                      <q-list dense v-else bordered>
+                        <q-item class="q-my-sm">
+                          <q-item-section>
+                            <q-item-label class="text-weight-regular text-grey">Nama Poktan</q-item-label>
+                            <q-item-label class="text-green text-weight-bold" lines="1">{{form.nama_poktan}}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn flat icon="delete" color="red"></q-btn>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
                     </q-card-section>
                     <q-separator/>
 
@@ -156,6 +182,8 @@ export default {
       data: [],
       loading: false,
       filter: '',
+      poktanOptions: [],
+      poktan: [],
       columns: [
         {
           name: 'nik',
@@ -181,6 +209,9 @@ export default {
     }
   },
   methods: {
+    bukaDialog () {
+      this.loadPoktan()
+    },
     hapus (id, nik) {
       this.$q
         .dialog({
@@ -267,6 +298,18 @@ export default {
           })
       }
     },
+    filterPoktan (val, update, abort) {
+      if (val.length < 2) {
+        abort()
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.poktanOptions = this.poktanMapped.filter(v =>
+          v !== null ? v.label.toLowerCase().indexOf(needle) > -1 : null
+        )
+      })
+    },
     edit (id) {
       this.loadingAction = true
       this.editMode = true
@@ -278,6 +321,16 @@ export default {
         .then((response) => {
           this.loadingAction = false
           this.form = response.data.message
+        })
+    },
+    loadPoktan () {
+      this.$store.dispatch({
+        type: 'poktan/index'
+      })
+        .then(response => {
+          if (response.data.status) {
+            this.poktan = response.data.message
+          }
         })
     },
     tambah () {
@@ -311,6 +364,16 @@ export default {
   },
   mounted () {
     this.loadData()
+  },
+  computed: {
+    poktanMapped () {
+      return this.poktan.map(item => (
+        {
+          label: item.nama,
+          value: item.id
+        }
+      ))
+    }
   }
 }
 </script>

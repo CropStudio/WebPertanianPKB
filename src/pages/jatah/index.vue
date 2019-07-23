@@ -62,14 +62,13 @@
                 </q-table>
             </div>
         </div>
-        <q-dialog v-model="action" persistent>
+        <q-dialog @show="bukaDialog" v-model="action" persistent>
             <q-card style="width: 500px; max-width: 80vw;">
                 <q-card-section class="row items-center">
                     <div class="text-h6">{{ editMode ? 'Edit Jatah Pupuk' : 'Tambah Jatah Pupuk'}}</div>
                     <q-space/>
                     <q-btn icon="close" flat round dense @click="closeDialog()"/>
                 </q-card-section>
-
                 <q-separator/>
                 <q-form @submit="onSubmit">
                     <q-card-section style="max-height: 50vh" class="scroll">
@@ -79,41 +78,109 @@
                                 maxlength="50"
                                 v-model="form.jumlah"
                                 label="Jumlah Pupuk"
-                                :rules="[
-                  val => !!val || 'Jumlah Pupuk dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_pupuk"
-                                label="Nama Pupuk"
-                                :rules="[
-                  val => !!val || 'Nama Pupuk dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_poktan"
-                                label="Nama Poktan"
-                                :rules="[
-                  val => !!val || 'Nama Poktan dibutuhkan'
-                  ]"
-                        ></q-input>
-                        <q-input
-                                outlined
-                                dense
-                                maxlength="50"
-                                v-model="form.id_petani"
-                                label="Nama Petani"
-                                :rules="[
-                  val => !!val || 'Nama Petani dibutuhkan'
-                  ]"
-                        ></q-input>
-
+                                :rules="[ val => !!val || 'Jumlah Pupuk dibutuhkan']" ></q-input>
+                      <q-select
+                        :rules="[
+                        val => !!val || 'Nama Pupuk dibutuhkan'
+                        ]"
+                        v-if="!form.nama_pupuk"
+                        outlined
+                        v-model="form.id_pupuk"
+                        :options="pupukOptions"
+                        label="Nama Pupuk"
+                        @filter="filterPupuk"
+                        use-input
+                        map-options
+                        clearable
+                        emit-value
+                        dense
+                      >
+                        <template v-slot:no-option>
+                          <q-item>
+                            <q-item-section class="text-grey">
+                              Tidak ada data
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-select>
+                      <q-list dense v-else bordered>
+                        <q-item class="q-my-sm">
+                          <q-item-section>
+                            <q-item-label class="text-weight-regular text-grey">Nama Pupuk</q-item-label>
+                            <q-item-label class="text-green text-weight-bold" lines="1">{{ form.nama_pupuk }}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn flat icon="delete" color="red"></q-btn>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                      <q-select
+                        :rules="[
+                        val => !!val || 'Nama Poktan dibutuhkan'
+                        ]"
+                        outlined
+                        v-if="!form.nama_poktan"
+                        v-model="form.id_poktan"
+                        :options="poktanOptions"
+                        label="Nama Poktan"
+                        @filter="filterPoktan"
+                        use-input
+                        map-options
+                        clearable
+                        emit-value
+                        dense
+                      >
+                        <template v-slot:no-option>
+                          <q-item>
+                            <q-item-section class="text-grey">
+                              Tidak ada data
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-select>
+                      <q-list dense v-else bordered>
+                        <q-item class="q-my-sm">
+                          <q-item-section>
+                            <q-item-label class="text-weight-regular text-grey">Nama Poktan</q-item-label>
+                            <q-item-label class="text-green text-weight-bold" lines="1">{{form.nama_poktan}}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn flat icon="delete" color="red"></q-btn>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                      <q-select
+                        v-if="!form.nama_petani"
+                        outlined
+                        v-model="form.id_petani"
+                        :options="petaniOptions"
+                        label="Nama Petani"
+                        @filter="filterPetani"
+                        use-input
+                        map-options
+                        clearable
+                        emit-value
+                        dense
+                      >
+                        <template v-slot:no-option>
+                          <q-item>
+                            <q-item-section class="text-grey">
+                              Tidak ada data
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-select>
+                      <q-list dense v-else bordered>
+                        <q-item class="q-my-sm">
+                          <q-item-section>
+                            <q-item-label class="text-weight-regular text-grey">Nama Petani</q-item-label>
+                            <q-item-label class="text-green text-weight-bold" lines="1">{{form.nama_petani}}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn flat icon="delete" color="red"></q-btn>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
                     </q-card-section>
                     <q-separator/>
 
@@ -147,7 +214,13 @@ export default {
       editMode: false,
       action: false,
       form: {},
-      loadingAction: false
+      loadingAction: false,
+      petaniOptions: [],
+      petani: [],
+      pupukOptions: [],
+      pupuk: [],
+      poktanOptions: [],
+      poktan: []
     }
   },
   methods: {
@@ -277,10 +350,107 @@ export default {
             message: 'Sambungan ke server bermasalah!'
           })
         })
+    },
+    loadPoktan () {
+      this.$store.dispatch({
+        type: 'poktan/index'
+      })
+        .then(response => {
+          if (response.data.status) {
+            this.poktan = response.data.message
+          }
+        })
+    },
+    loadPupuk: function () {
+      this.$store.dispatch({
+        type: 'pupuk/index'
+      })
+        .then(response => {
+          if (response.data.status) {
+            this.pupuk = response.data.message
+          }
+        })
+    },
+    loadPetani () {
+      this.$store.dispatch({
+        type: 'petani/index'
+      })
+        .then(response => {
+          if (response.data.status) {
+            this.petani = response.data.message
+          }
+        })
+    },
+    bukaDialog () {
+      this.loadPoktan()
+      this.loadPupuk()
+      this.loadPetani()
+    },
+    filterPupuk (val, update, abort) {
+      if (val.length < 2) {
+        abort()
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.pupukOptions = this.pupukMapped.filter(v =>
+          v !== null ? v.label.toLowerCase().indexOf(needle) > -1 : null
+        )
+      })
+    },
+    filterPetani (val, update, abort) {
+      if (val.length < 2) {
+        abort()
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.petaniOptions = this.petaniMapped.filter(v =>
+          v !== null ? v.label.toLowerCase().indexOf(needle) > -1 : null
+        )
+      })
+    },
+    filterPoktan (val, update, abort) {
+      if (val.length < 2) {
+        abort()
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.poktanOptions = this.poktanMapped.filter(v =>
+          v !== null ? v.label.toLowerCase().indexOf(needle) > -1 : null
+        )
+      })
     }
   },
   mounted () {
     this.loadData()
+  },
+  computed: {
+    pupukMapped () {
+      return this.pupuk.map(item => (
+        {
+          label: item.nama,
+          value: item.id
+        }
+      ))
+    },
+    petaniMapped () {
+      return this.petani.map(item => (
+        {
+          label: item.nama,
+          value: item.id
+        }
+      ))
+    },
+    poktanMapped () {
+      return this.poktan.map(item => (
+        {
+          label: item.nama,
+          value: item.id
+        }
+      ))
+    }
   }
 }
 </script>
