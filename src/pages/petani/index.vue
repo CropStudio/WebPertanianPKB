@@ -28,6 +28,15 @@
                                 dense
                                 @click="tambah()"
                         />
+                        <q-btn
+                                icon="ion-cloud-upload"
+                                unelevated
+                                label="Import"
+                                size="sm"
+                                class="q-ml-xs q-mr-xs q-pa-sm bg-blue-5 text-white"
+                                dense
+                                @click="upload = true"
+                        />
                     </template>
                     <template v-slot:body="props">
                         <q-tr :props="props">
@@ -172,12 +181,59 @@
                 </q-inner-loading>
             </q-card>
         </q-dialog>
+        <q-dialog v-model="upload">
+            <q-card class="text-white bg-blue-grey-5">
+                <q-card-section>
+                    <div class="text-h6 text-weight-light">Upload</div>
+                    <div class="text-weight-thin">Import data dari data csv.</div>
+                </q-card-section>
+                <q-card-section>
+                    <div class="column q-col-gutter-y-sm">
+                        <div class="col-12">
+                            <q-select
+                                    dense
+                                    ref="delimited"
+                                    dark
+                                    filled
+                                    color="white"
+                                    :options="[',',';']"
+                                    v-model="delimited"
+                                    label="Delimited/Pemisah file CSV"
+                            />
+                        </div>
+                        <div class="col-12">
+                            <q-input
+                                    color="white"
+                                    class="text-white"
+                                    @input="val => { file = val[0] }"
+                                    filled
+                                    type="file"
+                                    hint="Silahkan upload file dengan csv dengan header yang telah ditentukan sebelumnya."
+                                    @change="loadCSV($event)"
+                            />
+                        </div>
+                    </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                    <q-btn color="white" flat label="Batal" @click="upload = false"/>
+                    <q-btn color="teal" blue @click="uploadData()" label="Upload"/>
+                    <q-space></q-space>
+                    <q-btn v-if="parse_csv.length !== 0" disable flat align="center" color="white" label="Table di atas adalah preview 10 Data yang akan diverifikasi oleh sistem sebagai data yang telah TERBAYAR"/>
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
     </q-page>
 </template>
 <script>
 export default {
   data () {
     return {
+      error: [],
+      parse_header: [],
+      parse_csv: [],
+      sortOrders: {},
+      sortKey: '',
+      delimited: ';',
       // tabel
       data: [],
       loading: false,
@@ -202,6 +258,7 @@ export default {
       ],
       terpilih: [],
       // Dialog Action
+      upload: false,
       editMode: false,
       action: false,
       form: {},
@@ -209,8 +266,93 @@ export default {
     }
   },
   methods: {
+    csvJSON (csv) {
+      var vm = this
+      var lines = csv.split('\r\n')
+      console.log(csv)
+      var result = []
+      var delimited = this.delimited
+      var headers = lines[0].split(delimited)
+      console.log(headers)
+      vm.parse_header = lines[0].split(delimited)
+      lines[0].split(delimited).forEach(function (key) {
+        vm.sortOrders[key] = 1
+      })
+
+      lines.map((line, indexLine) => {
+        if (indexLine < 1) return // Jump header line
+        var obj = {}
+        var currentline = line.split(this.delimited)
+
+        headers.map(function (header, indexHeader) {
+          obj[header] = currentline[indexHeader]
+        })
+        result.push(obj)
+      })
+      result.pop() // remove the last item because undefined values
+      // console.log(result)
+      return result // JavaScript object
+    },
+    sortBy: function (key) {
+      var vm = this
+      vm.sortKey = key
+      vm.sortOrders[key] = vm.sortOrders[key] * -1
+    },
+    loadCSV (e) {
+      var vm = this
+      if (window.FileReader) {
+        if (e.target.files[0].type === 'application/vnd.ms-excel' || e.target.files[0].type === 'text/csv') {
+          var reader = new FileReader()
+          reader.readAsText(e.target.files[0])
+          // Handle errors load
+          reader.onload = function (event) {
+            var csv = event.target.result
+            vm.parse_csv = vm.csvJSON(csv)
+          }
+          reader.onerror = function (evt) {
+            if (evt.target.error.name === 'NotReadableError') {
+              alert('Tidak bisa membaca file!')
+            }
+          }
+        } else {
+          this.$q.notify({
+            icon: 'ion-alert',
+            color: 'yellow-10',
+            message: 'File format bukan CSV! Silahkan cek file format anda.'
+          })
+        }
+      } else {
+        alert('FileReader are not supported in this browser.')
+      }
+    },
     bukaDialog () {
       this.loadPoktan()
+    },
+    uploadData () {
+      console.log(this.parse_csv)
+      this.$q.loading.show()
+      this.$store
+        .dispatch({
+          type: 'poktan/upload',
+          data: this.parse_csv
+        })
+        .then(response => {
+          this.$q.loading.hide()
+          if (response.success) {
+            this.$q.notify({
+              icon: 'ion-checkmark',
+              color: 'positive',
+              message: 'Berhasil mengupload data!'
+            })
+          } else {
+            this.$q.notify({
+              icon: 'ion-close',
+              color: 'negative',
+              message: response.message
+            })
+            this.error = response.data
+          }
+        })
     },
     hapus (id, nik) {
       this.$q
