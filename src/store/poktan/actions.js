@@ -70,3 +70,16 @@ export function index ({ commit }) {
       })
   })
 }
+export function upload ({ commit }, payload) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.put('api/poktan/upload', {
+      data: payload.data
+    })
+      .then(({ data }) => {
+        resolve(data)
+      })
+      .catch(() => {
+        reject()
+      })
+  })
+}
