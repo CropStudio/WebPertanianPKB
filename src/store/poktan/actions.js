@@ -72,7 +72,7 @@ export function index ({ commit }) {
 }
 export function upload ({ commit }, payload) {
   return new Promise((resolve, reject) => {
-    axiosInstance.put('api/poktan/upload', {
+    axiosInstance.put('api/poktans/upload', {
       data: payload.data
     })
       .then(({ data }) => {
