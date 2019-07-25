@@ -139,7 +139,41 @@
         <q-card class="text-white bg-blue-grey-5">
           <q-card-section>
             <div class="text-h6 text-weight-light">Upload</div>
+            <div class="text-weight-thin">Import data dari data csv.</div>
           </q-card-section>
+          <q-card-section>
+            <div class="column q-col-gutter-y-sm">
+              <div class="col-12">
+                <q-select
+                  dense
+                  ref="delimited"
+                  dark
+                  filled
+                  color="white"
+                  :options="[',',';']"
+                  v-model="delimited"
+                  label="Delimited/Pemisah file CSV"
+                />
+              </div>
+              <div class="col-12">
+                <q-input
+                  color="white"
+                  class="text-white"
+                  @input="val => { file = val[0] }"
+                  filled
+                  type="file"
+                  hint="Silahkan upload file dengan csv dengan header yang telah ditentukan sebelumnya."
+                  @change="loadCSV($event)"
+                />
+              </div>
+            </div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn color="white" flat label="Batal" @click="upload = false"/>
+            <q-btn color="teal" blue @click="uploadData()" label="Upload"/>
+            <q-space></q-space>
+            <q-btn v-if="parse_csv.length !== 0" disable flat align="center" color="white" label="Table di atas adalah preview 10 Data yang akan diverifikasi oleh sistem sebagai data yang telah TERBAYAR"/>
+          </q-card-actions>
         </q-card>
       </q-dialog>
     </q-page>
@@ -235,25 +269,22 @@ export default {
       }
     },
     uploadData () {
-      // console.log(this.parse_csv)
+      console.log(this.parse_csv)
       this.$q.loading.show()
       this.$store
         .dispatch({
-          type: 'pembayaran/uploadData',
+          type: 'poktan/upload',
           data: this.parse_csv
         })
         .then(response => {
+          this.$q.loading.hide()
           if (response.success) {
             this.$q.notify({
               icon: 'ion-checkmark',
               color: 'positive',
               message: 'Berhasil mengupload data!'
             })
-            this.$q.loading.hide()
-            this.closeDialog()
-            this.$emit('loadData')
           } else {
-            this.$q.loading.hide()
             this.$q.notify({
               icon: 'ion-close',
               color: 'negative',
