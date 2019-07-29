@@ -87,9 +87,9 @@
                                 dense
                                 maxlength="50"
                                 v-model="form.nama"
-                                label="Nama Lengkap"
+                                label="Nama Poktan"
                                 :rules="[
-                  val => !!val || 'Nama Lengkap dibutuhkan'
+                  val => !!val || 'Nama Poktan dibutuhkan'
                   ]"
                         ></q-input>
                         <q-input
@@ -136,12 +136,12 @@
             </q-card>
         </q-dialog>
       <q-dialog v-model="upload">
-        <q-card class="text-white bg-blue-grey-5">
+        <q-card class="text-white bg-blue-grey-5" >
           <q-card-section>
             <div class="text-h6 text-weight-light">Upload</div>
             <div class="text-weight-thin">Import data dari data csv.</div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section style="max-height: 70vh" class="scroll">
             <div class="column q-col-gutter-y-sm">
               <div class="col-12">
                 <q-select
@@ -166,13 +166,33 @@
                   @change="loadCSV($event)"
                 />
               </div>
+              <div class="col" v-if="parse_csv.length !== 0">
+                <q-markup-table class="q-mr-md" separator="vertical">
+                  <thead>
+                  <tr>
+                    <th
+                      v-for="(key, index) in parse_header"
+                      :key="index"
+                      @click="sortBy(key)"
+                      :class="{ active: sortKey == key }"
+                    >
+                      {{ key }}
+                    </th>
+                  </tr>
+                  </thead>
+                  <tr v-for="(csv, index) in parse_csv.slice(0, 10)" :key="index">
+                    <td class="text-center" v-for="(key, index) in parse_header" :key="index">{{csv[key]}}</td>
+                  </tr>
+                </q-markup-table>
+              </div>
             </div>
+            <q-btn v-if="parse_csv.length !== 0" disable flat align="center" color="white" label="Table di atas adalah preview 10 Data yang akan diverifikasi oleh sistem sebagai data yang telah TERBAYAR"/>
           </q-card-section>
           <q-card-actions align="right">
             <q-btn color="white" flat label="Batal" @click="upload = false"/>
             <q-btn color="teal" blue @click="uploadData()" label="Upload"/>
+            <q-btn color="red" @click="parse_csv = []" label="Reset"/>
             <q-space></q-space>
-            <q-btn v-if="parse_csv.length !== 0" disable flat align="center" color="white" label="Table di atas adalah preview 10 Data yang akan diverifikasi oleh sistem sebagai data yang telah TERBAYAR"/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -201,7 +221,7 @@ export default {
       ],
       terpilih: [],
       // Dialog Action
-      upload: false,
+      upload: null,
       editMode: false,
       action: false,
       form: {},
@@ -212,11 +232,9 @@ export default {
     csvJSON (csv) {
       var vm = this
       var lines = csv.split('\r\n')
-      console.log(csv)
       var result = []
       var delimited = this.delimited
       var headers = lines[0].split(delimited)
-      console.log(headers)
       vm.parse_header = lines[0].split(delimited)
       lines[0].split(delimited).forEach(function (key) {
         vm.sortOrders[key] = 1
@@ -269,30 +287,40 @@ export default {
       }
     },
     uploadData () {
-      console.log(this.parse_csv)
-      this.$q.loading.show()
-      this.$store
-        .dispatch({
-          type: 'poktan/upload',
-          data: this.parse_csv
+      if (this.parse_csv.length > 0) {
+        this.$q.loading.show()
+        this.$store
+          .dispatch({
+            type: 'poktan/upload',
+            data: this.parse_csv
+          })
+          .then(response => {
+            this.$q.loading.hide()
+            if (response.success) {
+              this.$q.notify({
+                icon: 'ion-checkmark',
+                color: 'positive',
+                message: 'Berhasil mengupload data!'
+              })
+              this.loadData()
+              this.upload = false
+              this.parse_csv = []
+            } else {
+              this.$q.notify({
+                icon: 'ion-close',
+                color: 'negative',
+                message: response.message
+              })
+              this.error = response.data
+            }
+          })
+      } else {
+        this.$q.notify({
+          icon: 'ion-alert',
+          color: 'warning',
+          message: 'Belum memilih file'
         })
-        .then(response => {
-          this.$q.loading.hide()
-          if (response.success) {
-            this.$q.notify({
-              icon: 'ion-checkmark',
-              color: 'positive',
-              message: 'Berhasil mengupload data!'
-            })
-          } else {
-            this.$q.notify({
-              icon: 'ion-close',
-              color: 'negative',
-              message: response.message
-            })
-            this.error = response.data
-          }
-        })
+      }
     },
     hapus (id) {
       this.$q

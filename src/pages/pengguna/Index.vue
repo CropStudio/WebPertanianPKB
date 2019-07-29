@@ -45,12 +45,26 @@
                 />
               </q-td>
               <q-td key="nama" :props="props">{{props.row.nama}}</q-td>
-              <q-td key="role" v-if="props.row.role === 1" :props="props">Admin</q-td>
-              <q-td key="role" v-else-if="props.row.role === 2" :props="props">Petani</q-td>
-              <q-td key="role" v-else-if="props.row.role === 3" :props="props">Poktan</q-td>
-              <q-td key="role" v-else-if="props.row.role === 4" :props="props">Gubernur</q-td>
+              <q-td key="role" v-if="props.row.role === '1'" :props="props">Admin</q-td>
+              <q-td key="role" v-else-if="props.row.role === '2'" :props="props">Petani</q-td>
+              <q-td key="role" v-else-if="props.row.role === '3'" :props="props">Poktan</q-td>
+              <q-td key="role" v-else-if="props.row.role === '4'" :props="props">Gubernur</q-td>
               <q-td key="role" v-else :props="props">Tidak ada role</q-td>
-              <q-td key="ktp" :props="props">{{props.row.ktp}}</q-td>
+              <q-td key="ktp" :props="props">
+                <q-img v-if="props.row.ktp"
+                :src="'http://api.kartupetaniberjaya.com/ktp/' + props.row.ktp"
+                spinner-color="white"
+                style="max-width: 70px; max-height: 70px;cursor: pointer"
+                @click="openIMG(props.row.ktp)"
+              >
+                <template v-slot:error>
+                  <div class="absolute-full flex flex-center bg-negative text-white">
+                    Cannot load image
+                  </div>
+                </template>
+              </q-img>
+                <p v-else>Belum upload KTP</p>
+              </q-td>
             </q-tr>
             <q-tr v-show="props.expand" :props="props">
               <q-td colspan="100%">
@@ -163,38 +177,62 @@
               <q-radio
                 keep-color
                 v-model.trim="form.role"
-                :val=1
+                val="1"
                 label="Admin"
                 color="green"
               />
-              <q-radio keep-color v-model.trim="form.role" :val=3 label="POKTAN" color="blue"/>
-              <q-radio keep-color v-model.trim="form.role" :val=2 label="Petani" color="red"/>
+              <q-radio keep-color v-model.trim="form.role" val="3" label="POKTAN" color="blue"/>
+              <q-radio keep-color v-model.trim="form.role" val="2" label="Petani" color="red"/>
               <q-radio
                 keep-color
                 v-model.trim="form.role"
-                :val=4
+                val="4"
                 label="Gubernur"
                 color="yellow"
               />
             </p>
-            <div class="row q-col-gutter-sm">
-              <div class="col-12">
-                <q-uploader
-                  url="http://localhost:4444/upload"
-                  label="Kartu KTP"
-                  accept=".jpg, image/*"
-                  color="teal"
-                />
+            <div class="q-col-gutter-md row items-start">
+              <div class="col-6">
+                <q-img
+                  v-if="form.ktp"
+                  :src="'https://api.kartupetaniberjaya.com/ktp/' + form.ktp"
+                  style="width: 100%"
+                  spinner-color="white"
+                >
+                  <div class="absolute-bottom text-subtitle1 text-center q-pa-xs">
+                    Photo KTP
+                  </div>
+                </q-img>
               </div>
-              <div class="col-12">
-                <q-uploader
-                  url="http://localhost:4444/upload"
-                  label="Kartu Keluarga"
-                  accept=".jpg, image/*"
-                  color="red"
-                />
+              <div class="col-6">
+                <q-img
+                  v-if="form.kartukeluarga"
+                  :src="'https://api.kartupetaniberjaya.com/kk/' + form.kartukeluarga"
+                  style="width: 100%"
+                  spinner-color="white"
+                >
+                  <div class="absolute-bottom text-subtitle1 text-center q-pa-xs">
+                    Photo KK
+                  </div>
+                </q-img>
               </div>
             </div>
+            <q-list class="q-mt-sm" bordered>
+              <q-item-label class="bg-grey-2" header>Anak</q-item-label>
+              <q-separator></q-separator>
+              <q-item v-for="anak in form.anaks" :key="anak.id" class="q-my-sm" v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="primary" text-color="white">
+                    {{ anak.nama.charAt(0) }}
+                  </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ anak.nama }}</q-item-label>
+                  <q-item-label caption lines="1">{{ anak.jenis_kelamin }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </q-card-section>
           <q-separator/>
 
@@ -260,6 +298,9 @@ export default {
     }
   },
   methods: {
+    openIMG (ktp) {
+      window.open('https://api.kartupetaniberjaya.com/ktp/' + ktp, '_blank')
+    },
     hapus (id, nama) {
       this.$q
         .dialog({

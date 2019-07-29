@@ -78,3 +78,27 @@ export function index ({ commit }) {
       })
   })
 }
+export function upload ({ commit }, payload) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.put('api/petanis/upload', {
+      data: payload.data
+    })
+      .then(({ data }) => {
+        resolve(data)
+      })
+      .catch(() => {
+        reject()
+      })
+  })
+}
+export function hapusPoktan ({ commit }, payload) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.put('api/petani/poktan/' + payload.id)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch(() => {
+        reject()
+      })
+  })
+}

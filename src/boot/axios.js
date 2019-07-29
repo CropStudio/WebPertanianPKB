@@ -3,7 +3,7 @@ import { Cookies } from 'quasar'
 
 const axiosInstance = axios.create({
   // dev
-  baseURL: 'http://172.32.1.14:8000'
+  baseURL: 'http://api.kartupetaniberjaya.com'
   // production
   // baseURL: 'https://api.azzahraschoolsystem.com'
 })
