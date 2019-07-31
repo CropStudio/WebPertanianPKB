@@ -9,7 +9,7 @@
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
-          Title
+          Kartu Petani Berjaya
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
