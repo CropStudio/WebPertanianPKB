@@ -8,8 +8,11 @@
                         row-key="id"
                         :selected.sync="terpilih"
                         selection="multiple"
+                        @request="onRequest"
                         :loading="loading"
                         :filter="filter"
+                        :pagination.sync="pagination"
+                        binary-state-sort
                 >
                     <template v-slot:top>
                         <span class="text-h5 text-weight-light">Data Petani</span>
@@ -256,6 +259,13 @@ export default {
       delimited: ';',
       // tabel
       data: [],
+      pagination: {
+        sortBy: 'nama',
+        descending: false,
+        page: 1,
+        rowsPerPage: 3,
+        rowsNumber: 10
+      },
       loading: false,
       filter: '',
       poktanOptions: [],
@@ -547,14 +557,29 @@ export default {
       this.editMode = false
       this.form = {}
     },
-    loadData () {
+    onRequest (props) {
+      console.log(props)
+      let { page, rowsPerPage, sortBy, descending } = props.pagination
+      let filter = props.filter
       this.loading = true
-      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
-        .get('api/petani')
+        .get('api/petani', {
+          params: {
+            page: page,
+            sortBy: sortBy,
+            descending: descending,
+            filter: filter,
+            jumlahPerRow: rowsPerPage
+          }
+        })
         .then(response => {
           this.loading = false
-          this.data = response.data.message
+          this.data = response.data.message.data
+          this.pagination.page = response.data.message.current_page
+          this.pagination.rowsPerPage = response.data.message.per_page
+          this.pagination.sortBy = sortBy
+          this.pagination.descending = descending
+          this.pagination.rowsNumber = response.data.message.total
         })
         .catch(error => {
           this.loading = false
@@ -568,7 +593,10 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
+    this.onRequest({
+      pagination: this.pagination,
+      filter: undefined
+    })
   },
   computed: {
     poktanMapped () {

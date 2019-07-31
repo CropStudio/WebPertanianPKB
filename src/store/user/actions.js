@@ -80,3 +80,14 @@ export function show ({ commit }, payload) {
       })
   })
 }
+export function chart ({ commit }, payload) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.get('api/user/chart')
+      .then((response) => {
+        resolve(response)
+      })
+      .catch(() => {
+        reject()
+      })
+  })
+}

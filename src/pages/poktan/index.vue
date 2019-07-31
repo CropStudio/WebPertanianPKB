@@ -287,6 +287,7 @@ export default {
       }
     },
     uploadData () {
+      console.log(this.parse_csv)
       if (this.parse_csv.length > 0) {
         this.$q.loading.show()
         this.$store
@@ -432,7 +433,6 @@ export default {
     },
     loadData () {
       this.loading = true
-      // this.$axios.defaults.headers.common['token'] = this.$q.cookies.get('token')
       this.$axios
         .get('api/poktan')
         .then(response => {
