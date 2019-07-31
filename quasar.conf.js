@@ -46,16 +46,37 @@ module.exports = function (ctx) {
         'QItem',
         'QItemSection',
         'QItemLabel',
-        'QAvatar'
+        'QAvatar',
+        'QScrollArea',
+        'QSeparator',
+        'QSelect',
+        'QSpinnerDots',
+        'QTable',
+        'QTh',
+        'QTr',
+        'QTd',
+        'QInput',
+        'QSpace',
+        'QSelect',
+        'QForm',
+        'QToggle',
+        'QBadge',
+        'QDialog',
+        'QCard',
+        'QCardSection'
       ],
 
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Cookies',
+        'Loading',
+        'Dialog'
       ]
     },
 

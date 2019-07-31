@@ -91,3 +91,14 @@ export function chart ({ commit }, payload) {
       })
   })
 }
+export function infoDashboard ({ commit }) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.get('api/user')
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((response) => {
+        reject()
+      })
+  })
+}
