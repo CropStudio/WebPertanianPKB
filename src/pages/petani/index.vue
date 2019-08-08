@@ -69,6 +69,7 @@
                                             icon="delete"
                                             label="Delete"
                                     />
+                                    <q-btn color="secondary" dense size="sm" class="q-px-xs" icon="info" @click="showQr(props.row.nik)" label="Show QR-Code"/>
                                 </div>
                             </q-td>
                         </q-tr>
@@ -245,12 +246,33 @@
                 </q-card-actions>
             </q-card>
         </q-dialog>
+        <q-dialog v-model="qr">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Scan Disini</div>
+            </q-card-section>
+
+            <q-card-section>
+              <qr :text="idAktif"></qr>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="OK" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
     </q-page>
 </template>
 <script>
+import qr from 'vue-qrcode-component'
 export default {
+  components: {
+    qr
+  },
   data () {
     return {
+      qr: false,
+      idAktif: '',
       error: [],
       parse_header: [],
       parse_csv: [],
@@ -271,15 +293,16 @@ export default {
       poktanOptions: [],
       poktan: [],
       columns: [
-        {
-          name: 'nik',
-          required: true,
-          label: 'NIK',
-          align: 'left',
-          field: row => row.nik,
-          format: val => `${val}`,
-          sortable: true
-        },
+        // {
+        //   name: 'nik',
+        //   required: true,
+        //   label: 'NIK',
+        //   align: 'left',
+        //   field: row => row.nik,
+        //   format: val => `${val}`,
+        //   sortable: true
+        // },
+        { name: 'nik', align: 'center', label: 'NIK', field: 'nik', sortable: true },
         { name: 'nama', align: 'center', label: 'Nama Petani', field: 'nama', sortable: true },
         { name: 'jenis_kelamin', align: 'center', label: 'Jenis Kelamin', field: 'jenis_kelamin' },
         { name: 'komoditas', align: 'center', label: 'Komoditas', field: 'komoditas' },
@@ -355,6 +378,11 @@ export default {
     },
     bukaDialog () {
       this.loadPoktan()
+    },
+    showQr (id) {
+      this.idAktif = id
+      this.qr = true
+      // console.log(id)
     },
     uploadData () {
       if (this.parse_csv.length > 0) {
