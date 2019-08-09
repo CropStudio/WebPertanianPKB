@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   // dev
   baseURL: 'http://api.kartupetaniberjaya.com'
   // production
-  // baseURL: 'https://api.azzahraschoolsystem.com'
+  // baseURL: 'http://localhost:8000'
 })
 export default async ({ Vue }) => {
   Vue.prototype.$axios = axiosInstance

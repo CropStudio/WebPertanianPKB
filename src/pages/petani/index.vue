@@ -261,7 +261,7 @@ export default {
       data: [],
       pagination: {
         sortBy: 'nama',
-        descending: false,
+        descending: true,
         page: 1,
         rowsPerPage: 3,
         rowsNumber: 10

@@ -82,7 +82,13 @@ export function show ({ commit }, payload) {
 }
 export function chart ({ commit }, payload) {
   return new Promise((resolve, reject) => {
-    axiosInstance.get('api/user/chart')
+    axiosInstance.get('api/user/chart',
+      {
+        params: {
+          kabupaten: payload.kabupaten,
+          kecamatan: payload.kecamatan
+        }
+      })
       .then((response) => {
         resolve(response)
       })
@@ -91,9 +97,16 @@ export function chart ({ commit }, payload) {
       })
   })
 }
-export function infoDashboard ({ commit }) {
+export function infoDashboard ({ commit }, payload) {
   return new Promise((resolve, reject) => {
-    axiosInstance.get('api/user')
+    axiosInstance.get('api/info/dashboard',
+      {
+        params: {
+          kabupaten: payload.kabupaten,
+          kecamatan: payload.kecamatan
+        }
+      }
+    )
       .then((response) => {
         resolve(response)
       })
