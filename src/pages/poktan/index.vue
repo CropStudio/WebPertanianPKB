@@ -31,7 +31,7 @@
                       <q-btn
                         icon="ion-cloud-upload"
                         unelevated
-                        label="Import"
+                        label="Import Data Poktan"
                         size="sm"
                         class="q-ml-xs q-mr-xs q-pa-sm bg-blue-5 text-white"
                         dense
