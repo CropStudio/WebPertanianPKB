@@ -55,6 +55,16 @@
             <q-item-section>
               Petani
             </q-item-section>
+
+          </q-item>
+          <q-item active-class="active" clickable v-ripple to="/detail">
+            <q-item-section avatar>
+              <q-icon name="description" />
+            </q-item-section>
+
+            <q-item-section>
+              Detail
+            </q-item-section>
           </q-item>
 
           <q-item active-class="active" clickable v-ripple to="/anak">

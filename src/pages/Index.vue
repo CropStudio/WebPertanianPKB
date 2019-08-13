@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <q-page padding>
       <div class="row q-pa-sm q-col-gutter-md">
         <div class="col">
@@ -91,7 +91,7 @@
         </div>
       </div>
     <div class="row q-pa-sm q-col-gutter-md">
-      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6">
+      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-3">
         <div class="column q-col-gutter-sm">
           <div class="col">
             <bar-chart v-if="chartData" :options="optionChart" :chart-data="datacollection"></bar-chart>
@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6">
+      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-3">
         <div class="column q-col-gutter-sm">
           <div class="col">
             <q-card

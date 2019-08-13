@@ -22,6 +22,13 @@ const routes = [
     ]
   },
   {
+    path: '/detail',
+    component: () => import('layouts/BaseLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/detail/Index.vue') }
+    ]
+  },
+  {
     path: '/poktan',
     component: () => import('layouts/BaseLayout.vue'),
     children: [
