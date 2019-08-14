@@ -5,6 +5,7 @@
         <p class="error">{{ error }}</p>
 
         <p class="decode-result">Last result: <b>{{ result }}</b></p>
+        {{ _id }} {{ nama }}
 
         <qrcode-stream @decode="onDecode" @init="onInit" />
       </div>
@@ -26,12 +27,31 @@ export default {
       text: '',
       input: '',
       result: '',
-      eror: ''
+      eror: '',
+      id: '',
+      nama: ''
     }
   },
   methods: {
     onDecode (result) {
       this.result = result
+      this.getpetanibyNIK()
+    },
+    getpetanibyNIK () {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await this.$axios.get('petani/' + this.result)
+            .then(res => {
+              console.log(res)
+              let data = res.data
+              this._id = 'id petani: ' + data._id
+              this.nama = 'nama petani: ' + data.nama
+              // this.datapetani = res.data
+            })
+        } catch (eror) {
+          console.log(eror)
+        }
+      })
     },
 
     async onInit (promise) {
