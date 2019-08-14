@@ -18,7 +18,8 @@
     "quasar": "^1.0.0",
     "vue-chartjs": "^3.4.2",
     "vue-i18n": "^8.0.0",
-    "vue-qrcode-component": "^2.1.1"
+    "vue-qrcode-component": "^2.1.1",
+    "vue-qrcode-reader": "^2.0.3"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",

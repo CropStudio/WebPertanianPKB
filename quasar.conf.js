@@ -63,7 +63,10 @@ module.exports = function (ctx) {
         'QBadge',
         'QDialog',
         'QCard',
-        'QCardSection'
+        'QCardSection',
+        'QrcodeStream',
+        'QrcodeDropZone',
+        'QrcodeCapture'
       ],
 
       directives: [
