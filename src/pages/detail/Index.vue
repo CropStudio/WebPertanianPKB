@@ -4,17 +4,12 @@
       <div>
         <p class="error">{{ error }}</p>
 
-        <p class="decode-result">Last result: <b>{{ result }}</b></p>
-        {{ _id }} {{ nama }}
+        <p class="decode-result">NIK: <b>{{ result }}</b></p>
+        {{ _id }} <br> {{ nama }} <br> {{ jenis_kelamin }} <br> {{ komoditas }} <br> {{ poktan }} <br> {{ luas_lahan }}
 
         <qrcode-stream @decode="onDecode" @init="onInit" />
       </div>
-      <q-input v-model="input" filled type="email" hint="" style="width: 300px; height: 50px"
-               :loading="loadingState"
-               label="Masukan NIK"/>
-
-      <q-btn color="primary" label="Cari " />
-  </div>
+    </div>
   </div>
 </template>
 
@@ -25,11 +20,15 @@ export default {
   data () {
     return {
       text: '',
-      input: '',
       result: '',
       eror: '',
       id: '',
-      nama: ''
+      nama: '',
+      jenis_kelamin: '',
+      komoditas: '',
+      poktan: '',
+      luas_lahan: ''
+
     }
   },
   methods: {
@@ -44,8 +43,12 @@ export default {
             .then(res => {
               console.log(res)
               let data = res.data
-              this._id = 'id petani: ' + data._id
-              this.nama = 'nama petani: ' + data.nama
+              this._id = 'ID Petani: ' + data._id
+              this.nama = 'Nama Petani: ' + data.nama
+              this.jenis_kelamin = 'Jenis kelamin: ' + data.jenis_kelamin
+              this.komoditas = 'Komoditas: ' + data.komoditas
+              this.poktan = 'Poktan: ' + data.result[0].nama
+              this.luas_lahan = 'Luas Lahan: ' + data.luas_lahan
               // this.datapetani = res.data
             })
         } catch (eror) {
