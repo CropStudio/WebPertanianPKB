@@ -58,6 +58,11 @@ const routes = [
     children: [
       { path: 'jatah', component: () => import('pages/jatah/Index.vue') }
     ]
+  },
+  {
+    path: '/showqr/:nik',
+    component: () => import('pages/petani/ShowQR.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
